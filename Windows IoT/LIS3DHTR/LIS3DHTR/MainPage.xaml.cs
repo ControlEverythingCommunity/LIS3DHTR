@@ -20,12 +20,12 @@ namespace LIS3DHTR
 	/// </summary>
 	public sealed partial class MainPage : Page
 	{
-		private const byte ACCEL_I2C_ADDR = 0x18;			// 7-bit I2C address of the LIS3DHTR
-		private const byte ACCEL_REG_CONTROL1 = 0x20;		// Address of the Control register 1
-		private const byte ACCEL_REG_CONTROL4 = 0x23;		// Address of the Control register 2
-		private const byte ACCEL_REG_X = 0x28;				// Address of the X Axis data register
-		private const byte ACCEL_REG_Y = 0x2A;				// Address of the Y Axis data register
-		private const byte ACCEL_REG_Z = 0x2C;				// Address of the Z Axis data register
+		private const byte ACCEL_I2C_ADDR = 0x18;	// 7-bit I2C address of the LIS3DHTR
+		private const byte ACCEL_REG_CONTROL1 = 0x20;	// Address of the Control register 1
+		private const byte ACCEL_REG_CONTROL4 = 0x23;	// Address of the Control register 2
+		private const byte ACCEL_REG_X = 0x28;		// Address of the X Axis data register
+		private const byte ACCEL_REG_Y = 0x2A;		// Address of the Y Axis data register
+		private const byte ACCEL_REG_Z = 0x2C;		// Address of the Z Axis data register
 
 		private I2cDevice I2CAccel;
 		private Timer periodicTimer;
@@ -43,8 +43,8 @@ namespace LIS3DHTR
 
 		private async void InitI2CAccel()
 		{
-			string aqs = I2cDevice.GetDeviceSelector();					// Get a selector string that will return all I2C controllers on the system
-			var dis = await DeviceInformation.FindAllAsync(aqs);		// Find the I2C bus controller device with our selector string
+			string aqs = I2cDevice.GetDeviceSelector();		// Get a selector string that will return all I2C controllers on the system
+			var dis = await DeviceInformation.FindAllAsync(aqs);	// Find the I2C bus controller device with our selector string
 			if (dis.Count == 0)
 			{
 				Text_Status.Text = "No I2C controllers were found on the system";
@@ -59,8 +59,8 @@ namespace LIS3DHTR
 				Text_Status.Text = string.Format(
 					"Slave address {0} on I2C Controller {1} is currently in use by " +
 					"another application. Please ensure that no other applications are using I2C.",
-					settings.SlaveAddress,
-					dis[0].Id);
+				settings.SlaveAddress,
+				dis[0].Id);
 				return;
 			}
 
@@ -70,8 +70,8 @@ namespace LIS3DHTR
 				The first byte is the register address we want to write to.
 				The second byte is the contents that we want to write to the register. 
 			*/
-			byte[] WriteBuf_Control1 = new byte[] { ACCEL_REG_CONTROL1, 0x27 };		// 0x27 sets Power ON Mode and Output Data Rate = 10 Hz, X, Y, Z axes enabled
-			byte[] WriteBuf_Control4 = new byte[] { ACCEL_REG_CONTROL4, 0x00 };		// 0x00 sets Continuous update and range to +- 2Gs
+			byte[] WriteBuf_Control1 = new byte[] { ACCEL_REG_CONTROL1, 0x27 };	// 0x27 sets Power ON Mode and Output Data Rate = 10 Hz, X, Y, Z axes enabled
+			byte[] WriteBuf_Control4 = new byte[] { ACCEL_REG_CONTROL4, 0x00 };	// 0x00 sets Continuous update and range to +- 2Gs
 
 			// Write the register settings
 			try
@@ -131,8 +131,8 @@ namespace LIS3DHTR
 
 		private Acceleration ReadI2CAccel()
 		{
-			byte[] RegAddrBuf = new byte[] { ACCEL_REG_X };		// Register address we want to read from
-			byte[] ReadBuf = new byte[1];						// We read 1 byte to get X-Axis LSB register in one read
+			byte[] RegAddrBuf = new byte[] { ACCEL_REG_X };	// Register address we want to read from
+			byte[] ReadBuf = new byte[1];			// We read 1 byte to get X-Axis LSB register in one read
 
 			/*
 				Read from the accelerometer 
@@ -141,7 +141,7 @@ namespace LIS3DHTR
 			I2CAccel.WriteRead(RegAddrBuf, ReadBuf);
 			
 			byte[] RegAddrBuf1 = new byte[] { ACCEL_REG_X + 1 };	// Register address we want to read from
-			byte[] ReadBuf1 = new byte[1];							// We read 1 byte to get X-Axis MSB register in one read
+			byte[] ReadBuf1 = new byte[1];				// We read 1 byte to get X-Axis MSB register in one read
 
 			/*
 				Read from the accelerometer 
@@ -160,7 +160,7 @@ namespace LIS3DHTR
 			}
 
 			byte[] RegAddrBuf2 = new byte[] { ACCEL_REG_Y };	// Register address we want to read from
-			byte[] ReadBuf2 = new byte[1];						// We read 1 byte to get Y-Axis LSB register in one read
+			byte[] ReadBuf2 = new byte[1];				// We read 1 byte to get Y-Axis LSB register in one read
 
 			/*
 				Read from the accelerometer 
@@ -169,7 +169,7 @@ namespace LIS3DHTR
 			I2CAccel.WriteRead(RegAddrBuf2, ReadBuf2);
 			
 			byte[] RegAddrBuf3 = new byte[] { ACCEL_REG_Y + 1 };	// Register address we want to read from
-			byte[] ReadBuf3 = new byte[1];							// We read 1 byte to get Y-Axis MSB register in one read
+			byte[] ReadBuf3 = new byte[1];				// We read 1 byte to get Y-Axis MSB register in one read
 
 			/*
 				Read from the accelerometer
@@ -188,7 +188,7 @@ namespace LIS3DHTR
 			}
 
 			byte[] RegAddrBuf4 = new byte[] { ACCEL_REG_Z };	// Register address we want to read from
-			byte[] ReadBuf4 = new byte[1];						// We read 1 byte to get Z-Axis LSB register in one read
+			byte[] ReadBuf4 = new byte[1];				// We read 1 byte to get Z-Axis LSB register in one read
 
 			/*
 				Read from the accelerometer 
@@ -197,7 +197,7 @@ namespace LIS3DHTR
 			I2CAccel.WriteRead(RegAddrBuf4, ReadBuf4);
 			
 			byte[] RegAddrBuf5 = new byte[] { ACCEL_REG_Z + 1 };	// Register address we want to read from
-			byte[] ReadBuf5 = new byte[1];							// We read 1 byte to get Z-Axis MSB register in one read
+			byte[] ReadBuf5 = new byte[1];				// We read 1 byte to get Z-Axis MSB register in one read
 
 			/*
 			Read from the accelerometer 
@@ -224,4 +224,3 @@ namespace LIS3DHTR
 		}
 	}
 }
-
